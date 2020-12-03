@@ -1,51 +1,44 @@
-var startButton = document.getElementById("startbtn");
-var submitScoreBtn = document.getElementById("submitScore");
-var endGameBtns = document.getElementById("endGameBtns");
-var highscoreDisplayScore = document.getElementById("highscore-score")
-var startQuizDiv = document.getElementById("orginpage");
 var quizBody = document.getElementById("quiz");
 var resultsEl = document.getElementById("result");
-var questionsEl = document.getElementById("questions");
-var quizTimer = document.getElementById("timer");
 var finalScoreEl = document.getElementById("finalScore");
 var gameoverDiv = document.getElementById("gameover");
+var questionsEl = document.getElementById("questions");
+var quizTimer = document.getElementById("timer");
+var startQuizButton = document.getElementById("startbtn");
+var startQuizDiv = document.getElementById("orginpage");
 var highscoreContainer = document.getElementById("highscoreContainer");
 var highscoreDiv = document.getElementById("high-scorePage");
 var highscoreInputName = document.getElementById("initials");
 var highscoreDisplayName = document.getElementById("highscore-initials");
-var btnA = document.getElementById("a");
-var btnB = document.getElementById("b");
-var btnC = document.getElementById("c");
-var btnD = document.getElementById("d");
+var endGameBtns = document.getElementById("endGameBtns");
+var submitScoreBtn = document.getElementById("submitScore");
+var highscoreDisplayScore = document.getElementById("highscore-score");
+var buttonA = document.getElementById("a");
+var buttonB = document.getElementById("b");
+var buttonC = document.getElementById("c");
+var buttonD = document.getElementById("d");
 
 var quizQuestions = [{
+    question: "Which is not a git command?",
+    choiceA: "git push",
+    choiceB: "git add",
+    choiceC: "git check",
+    choiceD: "git status",
+    correctAnswer: "c"},
+  {
     question: "What does DOM stand for?",
     choiceA: "Document Object Model",
     choiceB: "Display Object Management",
     choiceC: "Digital Ordinance Model",
     choiceD: "Desktop Oriented Mode",
     correctAnswer: "a"},
-    {
-    question: "How do you check the status of a project in git?",
-    choiceA: "git add",
-    choiceB: "git commit",
-    choiceC: "git push",
-    choiceD: "git status",
-    correctAnswer: "d"},
-    {
-    question: "What is normally used to add styling to a page?",
+   {
+    question: "What is used to add styling to a web page?",
     choiceA: "HTML",
     choiceB: "CSS",
     choiceC: "Python",
     choiceD: "React.js",
-    correctAnswer: "b"},
-    {
-    question: "What is the purpose of an alt attribute?",
-    choiceA: "to provide an alternative text for an image",
-    choiceB: "to make a prettier web page",
-    choiceC: "to add a link",
-    choiceD: "I don't know.",
-    correctAnswer: "a"},
+    correctAnswer: "b"}, 
     {
     question: "What does WWW stand for?",
     choiceA: "Web World Workings",
@@ -54,33 +47,43 @@ var quizQuestions = [{
     choiceD: "Wendy Wants Waffles",
     correctAnswer: "c"},
     {
-    question: "What HTML attribute refers to an external JavaScript file?",
+    question: "What HTML attribute references an external JavaScript file?",
     choiceA: "href",
     choiceB: "src",
     choiceC: "class",
     choiceD: "index",
     correctAnswer: "b"},
-];
+    {
+    question: "What can you use to get a basic html outline?",
+    choiceA: "!",
+    choiceB: "*",
+    choiceC: "@",
+    choiceD: "#",
+    correctAnswer: "a"},
+        
+    
+    ];
 
-var finalQIndex = quizQuestions.length;
-var currentQIndex = 0;
-var timeLeft = 60;
+var finalQuestionIndex = quizQuestions.length;
+var currentQuestionIndex = 0;
+var timeLeft = 76;
 var timerInterval;
 var score = 0;
 var correct;
 
 function generateQuizQuestion(){
     gameoverDiv.style.display = "none";
-    if (currentQIndex === finalQIndex){
+    if (currentQuestionIndex === finalQuestionIndex){
         return showScore();
     } 
-    var currentQuestion = quizQuestions[currentQIndex];
+    var currentQuestion = quizQuestions[currentQuestionIndex];
     questionsEl.innerHTML = "<p>" + currentQuestion.question + "</p>";
-    btnA.innerHTML = currentQuestion.choiceA;
-    btnB.innerHTML = currentQuestion.choiceB;
-    btnC.innerHTML = currentQuestion.choiceC;
-    btnD.innerHTML = currentQuestion.choiceD;
+    buttonA.innerHTML = currentQuestion.choiceA;
+    buttonB.innerHTML = currentQuestion.choiceB;
+    buttonC.innerHTML = currentQuestion.choiceC;
+    buttonD.innerHTML = currentQuestion.choiceD;
 };
+
 
 function startQuiz(){
     gameoverDiv.style.display = "none";
@@ -104,13 +107,15 @@ function showScore(){
     gameoverDiv.style.display = "flex";
     clearInterval(timerInterval);
     highscoreInputName.value = "";
-    finalScoreEl.innerHTML = "Your score is", + score;
+    finalScoreEl.innerHTML = "You got " + score + " out of " + quizQuestions.length + " correct!";
 }
+
 
 submitScoreBtn.addEventListener("click", function highscore(){
     
+    
     if(highscoreInputName.value === "") {
-        alert("Please enter your initials.");
+        alert("Initials cannot be blank");
         return false;
     }else{
         var savedHighscores = JSON.parse(localStorage.getItem("savedHighscores")) || [];
@@ -119,6 +124,7 @@ submitScoreBtn.addEventListener("click", function highscore(){
             name : currentUser,
             score : score
         };
+    
         gameoverDiv.style.display = "none";
         highscoreContainer.style.display = "flex";
         highscoreDiv.style.display = "block";
@@ -127,8 +133,11 @@ submitScoreBtn.addEventListener("click", function highscore(){
         savedHighscores.push(currentHighscore);
         localStorage.setItem("savedHighscores", JSON.stringify(savedHighscores));
         generateHighscores();
+
     }
+    
 });
+
 
 function generateHighscores(){
     highscoreDisplayName.innerHTML = "";
@@ -144,12 +153,7 @@ function generateHighscores(){
     }
 }
 
-function clearScore(){
-    window.localStorage.clear();
-    highscoreDisplayName.textContent = "";
-    highscoreDisplayScore.textContent = "";
-}
-
+// This function displays the high scores page while hiding all of the other pages from 
 function showHighscore(){
     startQuizDiv.style.display = "none"
     gameoverDiv.style.display = "none";
@@ -160,26 +164,32 @@ function showHighscore(){
     generateHighscores();
 }
 
+function clearScore(){
+    window.localStorage.clear();
+    highscoreDisplayName.textContent = "";
+    highscoreDisplayScore.textContent = "";
+}
+
 function replayQuiz(){
     highscoreContainer.style.display = "none";
     gameoverDiv.style.display = "none";
     startQuizDiv.style.display = "flex";
     timeLeft = 76;
     score = 0;
-    currentQIndex = 0;
+    currentQuestionIndex = 0;
 }
 
 function checkAnswer(answer){
-    correct = quizQuestions[currentQIndex].correctAnswer;
+    correct = quizQuestions[currentQuestionIndex].correctAnswer;
 
-    if (answer === correct && currentQIndex !== finalQIndex){
+    if (answer === correct && currentQuestionIndex !== finalQuestionIndex){
         score++;
         alert("That Is Correct!");
-        currentQIndex++;
+        currentQuestionIndex++;
         generateQuizQuestion();
-    }else if (answer !== correct && currentQIndex !== finalQIndex){
+    }else if (answer !== correct && currentQuestionIndex !== finalQuestionIndex){
         alert("That Is Incorrect.")
-        currentQIndex++;
+        currentQuestionIndex++;
         generateQuizQuestion();
     }else{
         showScore();
