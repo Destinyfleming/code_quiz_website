@@ -1,7 +1,7 @@
 var startButton = document.getElementById("startbtn");
 var submitScoreBtn = document.getElementById("submitScore");
 var endGameBtns = document.getElementById("endGameBtns");
-var highscoreDisplay = document.getElementById("highscore-score")
+var highscoreDisplayScore = document.getElementById("highscore-score")
 var startQuizDiv = document.getElementById("orginpage");
 var quizBody = document.getElementById("quiz");
 var resultsEl = document.getElementById("result");
@@ -76,10 +76,10 @@ function generateQuizQuestion(){
     } 
     var currentQuestion = quizQuestions[currentQIndex];
     questionsEl.innerHTML = "<p>" + currentQuestion.question + "</p>";
-    buttonA.innerHTML = currentQuestion.choiceA;
-    buttonB.innerHTML = currentQuestion.choiceB;
-    buttonC.innerHTML = currentQuestion.choiceC;
-    buttonD.innerHTML = currentQuestion.choiceD;
+    btnA.innerHTML = currentQuestion.choiceA;
+    btnB.innerHTML = currentQuestion.choiceB;
+    btnC.innerHTML = currentQuestion.choiceC;
+    btnD.innerHTML = currentQuestion.choiceD;
 };
 
 function startQuiz(){
@@ -167,6 +167,23 @@ function replayQuiz(){
     timeLeft = 76;
     score = 0;
     currentQIndex = 0;
+}
+
+function checkAnswer(answer){
+    correct = quizQuestions[currentQIndex].correctAnswer;
+
+    if (answer === correct && currentQIndex !== finalQIndex){
+        score++;
+        alert("That Is Correct!");
+        currentQIndex++;
+        generateQuizQuestion();
+    }else if (answer !== correct && currentQIndex !== finalQIndex){
+        alert("That Is Incorrect.")
+        currentQIndex++;
+        generateQuizQuestion();
+    }else{
+        showScore();
+    }
 }
 
 startQuizButton.addEventListener("click",startQuiz);
