@@ -61,7 +61,6 @@ var quizQuestions = [{
     choiceD: "#",
     correctAnswer: "a"},
         
-    
     ];
 
 var finalQuestionIndex = quizQuestions.length;
